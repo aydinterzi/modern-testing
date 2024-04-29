@@ -1,12 +1,19 @@
 import { render, screen } from "@testing-library/react";
 
-function TestComponent() {
-  return <div>Modern Testing</div>;
+function TestComponent({ suffix }) {
+  return (
+    <div>
+      {suffix && suffix}
+      {!suffix && "suffix yok"}
+    </div>
+  );
 }
 
 it("should render App component without crashing", () => {
-  render(<TestComponent />);
-  const element = screen.getByText(/ern/i);
-  // const element = screen.getByText("ern",{exact:false});
+  render(<TestComponent suffix="Test" />);
+  const element = screen.getByText(/Test/i);
+  const emptyElement = screen.queryByText("suffix yok");
+
+  expect(emptyElement).not.toBeInTheDocument();
   expect(element).toBeInTheDocument();
 });
